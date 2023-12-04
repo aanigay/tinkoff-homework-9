@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option go_package = "pkg/files";
+
+package files;
+
+service FileService {
+  rpc UploadFile (stream FileChunk) returns (UploadResponse);
+  rpc GetFileList (google.protobuf.Empty) returns (FileList);
+  rpc GetFileInfo (FileInfoRequest) returns (FileInfo);
+}
+
+message FileChunk {
+  string filename = 1;
+  bytes chunk_data = 2;
+}
+
+message UploadResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message FileInfoRequest {
+  string filename = 1;
+}
+
+message FileInfo {
+  string filename = 1;
+  int64 size = 2;
+}
+
+message FileList {
+  repeated string files = 1;
+}
